@@ -24,3 +24,8 @@ button {
   margin: 15px 0;
   float: right;
 }
+
+textarea {
+  width: 100%;
+  height: 200px;
+}
