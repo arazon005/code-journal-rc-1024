@@ -1,25 +1,19 @@
 'use strict';
-let tempID = 1;
-const entryArray = readLogs();
-const data = {
+let data = {
   view: 'entry-form',
-  entries: entryArray,
+  entries: [],
   editing: null,
-  nextEntryId: tempID,
+  nextEntryId: 1,
 };
+readLogs();
 console.log(JSON.parse(JSON.stringify(data)));
 function readLogs() {
   if (localStorage.getItem('logs')) {
-    const newLogs = JSON.parse(localStorage.getItem('logs'));
-    tempID = Number(JSON.parse(localStorage.getItem('id')));
-    return newLogs;
-  } else {
-    return [];
+    const newData = JSON.parse(localStorage.getItem('logs'));
+    data = newData;
   }
 }
 function writeLogs() {
-  const logsJSON = JSON.stringify(data.entries);
-  const idJSON = JSON.stringify(data.nextEntryId);
+  const logsJSON = JSON.stringify(data);
   localStorage.setItem('logs', logsJSON);
-  localStorage.setItem('id', idJSON);
 }

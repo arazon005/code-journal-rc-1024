@@ -5,29 +5,29 @@ interface Log {
   notes: string;
   id: number;
 }
-let tempID: number = 1;
-const entryArray: Log[] = readLogs();
-const data = {
+interface Data {
+  view: 'entries' | 'entry-form';
+  entries: Log[];
+  editing: null;
+  nextEntryId: number;
+}
+let data: Data = {
   view: 'entry-form',
-  entries: entryArray,
+  entries: [],
   editing: null,
-  nextEntryId: tempID,
+  nextEntryId: 1,
 };
+readLogs();
 console.log(JSON.parse(JSON.stringify(data)));
 
-function readLogs(): Log[] {
+function readLogs(): void {
   if (localStorage.getItem('logs')) {
-    const newLogs: Log[] = JSON.parse(localStorage.getItem('logs') as string);
-    tempID = Number(JSON.parse(localStorage.getItem('id') as string));
-    return newLogs;
-  } else {
-    return [];
+    const newData: Data = JSON.parse(localStorage.getItem('logs') as string);
+    data = newData;
   }
 }
 
 function writeLogs(): void {
-  const logsJSON = JSON.stringify(data.entries);
-  const idJSON = JSON.stringify(data.nextEntryId);
+  const logsJSON = JSON.stringify(data);
   localStorage.setItem('logs', logsJSON);
-  localStorage.setItem('id', idJSON);
 }
