@@ -26,11 +26,11 @@ $submit.addEventListener('submit', (event) => {
     title: $formElements.title.value,
     url: $formElements.photo.value,
     notes: $formElements.notes.value,
-    id: data.nextEntryId - 1,
+    id: data.nextEntryId,
   };
   data.nextEntryId++;
   data.entries.push(newLog);
   $image.setAttribute('src', '/images/placeholder-image-square.jpg');
-  console.log(data.entries);
+  writeLogs();
   $submit.reset();
 });
