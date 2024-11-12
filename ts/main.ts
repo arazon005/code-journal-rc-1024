@@ -2,8 +2,10 @@
 
 const $imageInput = document.querySelector('.photo-url');
 const $image = document.querySelector('img');
+const $ul = document.querySelector('ul');
 if (!$imageInput) throw new Error('$imageInput query failed');
 if (!$image) throw new Error('$image query failed');
+if (!$ul) throw new Error('$ul query failed');
 
 $imageInput.addEventListener('input', (event) => {
   const input = event.target as HTMLInputElement;
@@ -31,9 +33,12 @@ $submit.addEventListener('submit', (event) => {
     id: data.nextEntryId,
   };
   data.nextEntryId++;
+  $ul.prepend(renderEntry(newEntry));
   data.entries.push(newEntry);
+  toggleNoEntries();
+  viewSwap('entries');
   $image.setAttribute('src', '/images/placeholder-image-square.jpg');
-  writeLogs();
+  writeEntries();
   $submit.reset();
 });
 
@@ -44,24 +49,29 @@ document.addEventListener('DOMContentLoaded', (): void => {
   for (let i = 0; i < data.entries.length; i++) {
     $entryList.appendChild(renderEntry(data.entries[i]));
   }
+  viewSwap(data.view);
   toggleNoEntries();
 });
 
 const $li = document.querySelector('.no-entries') as HTMLElement;
-if (!$li) throw new Error('$ul query failed');
+if (!$li) throw new Error('$li query failed');
 
 const $headerAnchor = document.querySelector('.header-anchor');
-if (!$headerAnchor) throw new Error('$anchor query failed');
-
-const $dataView = document.querySelectorAll('.view');
-if (!$dataView) throw new Error('$dataView query failed');
+if (!$headerAnchor) throw new Error('$headerAnchor query failed');
+const $newEntryAnchor = document.querySelector('.new-entry');
+if (!$newEntryAnchor) throw new Error('$newEntryAnchor query failed');
 
 $headerAnchor.addEventListener('click', () => {
   viewSwap('entries');
 });
+$newEntryAnchor.addEventListener('click', () => {
+  viewSwap('entry-form');
+});
+
+const $dataView = document.querySelectorAll('.view');
+if (!$dataView) throw new Error('$dataView query failed');
 
 // functions
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function renderEntry(entry: Entry): Element {
   const $list = document.createElement('li');
   const $row = document.createElement('div');
@@ -86,7 +96,7 @@ function renderEntry(entry: Entry): Element {
 }
 
 function toggleNoEntries(): void {
-  if (!data.entries) {
+  if (data.entries.length === 0) {
     $li.setAttribute('class', 'no-entries');
   } else {
     $li.setAttribute('class', 'no-entries hidden');
@@ -96,6 +106,7 @@ function toggleNoEntries(): void {
 function viewSwap(view: string): void {
   if (view === 'entries' || view === 'entry-form') {
     data.view = view;
+    writeEntries();
   }
   for (let i = 0; i < $dataView.length; i++) {
     if (data.view === $dataView[i].getAttribute('data-view')) {

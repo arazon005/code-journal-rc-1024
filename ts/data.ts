@@ -17,17 +17,16 @@ let data: Data = {
   editing: null,
   nextEntryId: 1,
 };
-readLogs();
-console.log(JSON.parse(JSON.stringify(data)));
+readEntries();
 
-function readLogs(): void {
+function readEntries(): void {
   if (localStorage.getItem('logs')) {
     const newData: Data = JSON.parse(localStorage.getItem('logs') as string);
     data = newData;
   }
 }
 
-function writeLogs(): void {
+function writeEntries(): void {
   const logsJSON = JSON.stringify(data);
   localStorage.setItem('logs', logsJSON);
 }
