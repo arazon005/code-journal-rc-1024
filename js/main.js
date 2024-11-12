@@ -1,4 +1,5 @@
 'use strict';
+// event listeners and dom activities
 const $imageInput = document.querySelector('.photo-url');
 const $image = document.querySelector('img');
 if (!$imageInput) throw new Error('$imageInput query failed');
@@ -28,3 +29,19 @@ $submit.addEventListener('submit', (event) => {
   writeLogs();
   $submit.reset();
 });
+// functions
+function renderEntry(entry) {
+  const $list = document.createElement('li');
+  const $row = document.createElement('div');
+  $row.setAttribute('class', 'row');
+  const $column1 = document.createElement('div');
+  $column1.setAttribute('class', 'column-half');
+  $column1.textContent = `<img src=${entry.url}/>`;
+  $row.appendChild($column1);
+  const $column2 = document.createElement('div');
+  $column2.setAttribute('class', 'column-half');
+  $column2.textContent = `<h2>${entry.title}</h2><p>${entry.notes}</p`;
+  $row.appendChild($column2);
+  $list.appendChild($row);
+  return $list;
+}
