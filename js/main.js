@@ -1,28 +1,22 @@
+'use strict';
 const $imageInput = document.querySelector('.photo-url');
 const $image = document.querySelector('img');
 if (!$imageInput) throw new Error('$imageInput query failed');
 if (!$image) throw new Error('$image query failed');
-
 $imageInput.addEventListener('input', (event) => {
-  const input = event.target as HTMLInputElement;
+  const input = event.target;
   if (input.value === '') {
     $image.setAttribute('src', '/images/placeholder-image-square.jpg');
   } else {
     $image.setAttribute('src', input.value);
   }
 });
-
-const $submit = document.querySelector('#entry') as HTMLFormElement;
+const $submit = document.querySelector('#entry');
 if (!$submit) throw new Error('$submit query failed');
-interface FormElements extends HTMLFormControlsCollection {
-  title: HTMLInputElement;
-  photo: HTMLInputElement;
-  notes: HTMLTextAreaElement;
-}
 $submit.addEventListener('submit', (event) => {
   event.preventDefault();
-  const $formElements = $submit.elements as FormElements;
-  const newLog: Log = {
+  const $formElements = $submit.elements;
+  const newLog = {
     title: $formElements.title.value,
     url: $formElements.photo.value,
     notes: $formElements.notes.value,
