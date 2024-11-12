@@ -4,6 +4,13 @@ header {
   padding: 0.5em 0;
 }
 
+a {
+  font-size: 65%;
+  margin-left: 20px;
+  position: relative;
+  bottom: 3px;
+}
+
 img {
   width: 100%;
 }

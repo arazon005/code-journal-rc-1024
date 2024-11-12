@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-interface Log {
+interface Entry {
   title: string;
   url: string;
   notes: string;
   id: number;
 }
 interface Data {
-  view: 'entries' | 'entry-form';
-  entries: Log[];
+  view: string;
+  entries: Entry[];
   editing: null;
   nextEntryId: number;
 }
