@@ -13,6 +13,12 @@
   flex-wrap: wrap;
 }
 
+li {
+  border-bottom: 2px solid black;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+
 .column-full,
 .column-half {
   width: 100%;
@@ -26,6 +32,12 @@
   .column-full,
   .column-half {
     padding: 0 0.75rem;
+  }
+
+  li {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: none;
   }
 
   .column-half {
