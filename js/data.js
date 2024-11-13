@@ -5,15 +5,14 @@ let data = {
   editing: null,
   nextEntryId: 1,
 };
-readLogs();
-console.log(JSON.parse(JSON.stringify(data)));
-function readLogs() {
+readEntries();
+function readEntries() {
   if (localStorage.getItem('logs')) {
     const newData = JSON.parse(localStorage.getItem('logs'));
     data = newData;
   }
 }
-function writeLogs() {
+function writeEntries() {
   const logsJSON = JSON.stringify(data);
   localStorage.setItem('logs', logsJSON);
 }
