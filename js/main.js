@@ -106,10 +106,12 @@ const $newEntryAnchor = document.querySelector('.new-entry');
 if (!$newEntryAnchor) throw new Error('$newEntryAnchor query failed');
 $headerAnchor.addEventListener('click', () => {
   data.editing = null;
+  $submit.reset();
   viewSwap('entries');
 });
 $newEntryAnchor.addEventListener('click', () => {
   data.editing = null;
+  $submit.reset();
   $entryHeader.textContent = 'New Entry';
   $imageInput.setAttribute('value', '');
   $image.setAttribute('src', '/images/placeholder-image-square.jpg');
