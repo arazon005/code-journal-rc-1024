@@ -5,13 +5,15 @@ const $image = document.querySelector('img');
 const $ul = document.querySelector('ul');
 const $titleInput = document.querySelector('.title-input');
 const $notesInput = document.querySelector('.notes-input');
-const $entryHeader = document.querySelector('.entry-header');
+const $entryHeader = document.querySelector('.entry-header') as HTMLElement;
+const $deleteButton = document.querySelector('.delete-button');
 if (!$imageInput) throw new Error('$imageInput query failed');
 if (!$image) throw new Error('$image query failed');
 if (!$ul) throw new Error('$ul query failed');
 if (!$titleInput) throw new Error('$titleInput query failed');
 if (!$notesInput) throw new Error('$notesInput query failed');
 if (!$entryHeader) throw new Error('$entryHeader query failed');
+if (!$deleteButton) throw new Error('$deleteButton query failed');
 
 $imageInput.addEventListener('input', (event) => {
   const input = event.target as HTMLInputElement;
@@ -84,6 +86,7 @@ document.addEventListener('DOMContentLoaded', (): void => {
 });
 
 $ul.addEventListener('click', (event) => {
+  $deleteButton.setAttribute('class', 'delete-button');
   const $eventTarget = event.target as HTMLElement;
   $entryHeader.textContent = 'Edit Entry';
   if ($eventTarget.getAttribute('id') === 'pencil-icon') {
@@ -124,6 +127,7 @@ $headerAnchor.addEventListener('click', () => {
   viewSwap('entries');
 });
 $newEntryAnchor.addEventListener('click', () => {
+  $deleteButton.setAttribute('class', 'delete-button hidden');
   data.editing = null;
   $submit.reset();
   $entryHeader.textContent = 'New Entry';
@@ -132,6 +136,48 @@ $newEntryAnchor.addEventListener('click', () => {
   $titleInput.setAttribute('value', '');
   $notesInput.textContent = '';
   viewSwap('entry-form');
+});
+
+const $confirmModal = document.querySelector('dialog');
+if (!$confirmModal) throw new Error('$confirmModal query failed');
+const $deleteConfirmation = document.querySelectorAll('.delete-confirmation');
+if (!$deleteConfirmation) throw new Error('$deleteConfirmation query failed');
+
+$deleteButton.addEventListener('click', () => {
+  $confirmModal.showModal();
+});
+
+$confirmModal.addEventListener('click', (event) => {
+  const $eventTarget = event.target as HTMLElement;
+  if ($eventTarget.getAttribute('id') === 'confirm') {
+    if (data.editing) {
+      for (let i = 0; i < data.entries.length; i++) {
+        if (data.editing.id === data.entries[i].id) {
+          const $listElements = document.querySelectorAll('li');
+          data.entries.splice(i, 1);
+          for (let i = 0; i < $listElements.length; i++) {
+            if (
+              $listElements[i].getAttribute('data-entry-id') ===
+              String(data.editing.id)
+            ) {
+              while ($listElements[i].firstChild) {
+                $listElements[i].removeChild(
+                  $listElements[i].firstChild as Node,
+                );
+              }
+              $listElements[i].remove();
+            }
+          }
+          $confirmModal.close();
+          viewSwap('entries');
+          $entryHeader.textContent = 'New Entry';
+          toggleNoEntries();
+        }
+      }
+    }
+  } else if ($eventTarget.getAttribute('id') === 'cancel') {
+    $confirmModal.close();
+  }
 });
 
 const $dataView = document.querySelectorAll('.view');
@@ -175,7 +221,6 @@ function toggleNoEntries(): void {
 }
 
 function viewSwap(view: string): void {
-  console.log(data.editing);
   if (view === 'entries' || view === 'entry-form') {
     data.view = view;
     writeEntries();
