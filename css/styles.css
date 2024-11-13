@@ -43,6 +43,23 @@ button {
   cursor: pointer;
 }
 
+.delete-button {
+  margin: 0;
+  font-size: 100%;
+  position: relative;
+  top: 10px;
+  border-bottom: 2px solid red;
+  color: red;
+}
+
+.delete-confirmation {
+  flex-basis: 50%;
+  text-align: center;
+  margin: 0;
+  position: static;
+  font-size: 100%;
+}
+
 .fa-pencil {
   float: right;
 }
